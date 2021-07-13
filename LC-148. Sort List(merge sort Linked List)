@@ -1,0 +1,78 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+ 
+    ListNode* midpointLL(ListNode* head)
+    {
+        if(head == NULL || head->next == NULL) return head;
+ 
+        ListNode* slow = head;
+        ListNode* fast = head->next;
+        while(fast != NULL && fast->next != NULL)
+        {
+            fast = fast->next->next;
+            slow = slow->next;
+            //cout << slow << " ";
+        }
+        return slow;
+    }
+ 
+    ListNode* mergeLL(ListNode* l1, ListNode* l2)
+    {
+        if(l1 == NULL) return l2;
+        if(l2 == NULL) return l1;
+ 
+        ListNode* dummy = new ListNode(-1);
+        ListNode* itr = dummy;
+ 
+        while(l1 != NULL && l2 != NULL)
+        {
+            if(l1->val <= l2->val)
+            {
+                itr->next = l1;
+                l1 = l1->next;
+            }
+            else
+            {
+                itr->next = l2;
+                l2 = l2->next;
+            }
+            itr = itr->next;
+        }
+ 
+        itr->next = (l1 == NULL ? l2 : l1);
+        return dummy->next;
+    }
+ 
+    ListNode* mergeSort(ListNode* head)
+    {
+        if(head == NULL || head->next == NULL) return head;
+ 
+        ListNode* mid = midpointLL(head);
+ 
+        ListNode* a = head;
+        ListNode* b = mid->next;
+        mid->next = NULL;
+        ListNode* c = NULL;
+        a = mergeSort(a);
+        b = mergeSort(b);
+        c = mergeLL(a,b);
+ 
+        return c;
+    }
+ 
+    ListNode* sortList(ListNode* head) 
+    {
+        head = mergeSort(head);
+        return head;
+    }
+};
