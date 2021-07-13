@@ -1,0 +1,22 @@
+//Transform to Sum Tree https://practice.geeksforgeeks.org/problems/transform-to-sum-tree/1#
+class Solution {
+  public:
+ 
+	int solve(Node* root)
+    {
+        if(!root) return 0;
+ 
+        int leftS = solve(root->left);
+        int rightS = solve(root->right);
+ 
+        int temp = root->data;
+        root->data = leftS + rightS;
+ 
+        return leftS+rightS+temp;
+    }
+    void toSumTree(Node *root)
+    {
+        // Your code here
+        solve(root);
+    }
+};
