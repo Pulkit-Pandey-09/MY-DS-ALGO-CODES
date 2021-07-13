@@ -1,0 +1,29 @@
+typedef pair<int, int> pi;
+class Solution {
+public: // O(nlogn) apprach. for each interval, binary search is done to find immediate interval
+    vector<int> findRightInterval(vector<vector<int>>& intervals) {
+        map<vector<int>, int> rightIntervalsMap;             // storing the index of intervals
+        vector<int> intervalsResIdx(intervals.size(), -1);  //  for answer(already initialised with -1)
+        vector<pi> intervalsPair;                          // book-keeper for sorting the intervals 
+ 
+        for(int i=0; i<intervals.size(); i++) {
+            rightIntervalsMap[{intervals[i]}] = i;
+            intervalsPair.push_back({intervals[i][0], intervals[i][1]});
+        }
+ 
+        sort(intervalsPair.begin(), intervalsPair.end());
+ 
+        for(int i=0; i<intervals.size(); i++) {      // running for loop on original interval vector
+            pi p1 = {intervals[i][1], INT_MIN}; // NOTE **: How lower_bound calculated on pair (Binary search)
+            int idx = lower_bound(intervalsPair.begin(), intervalsPair.end(), p1) - intervalsPair.begin();
+ 
+            if(idx >= intervalsPair.size())
+                continue;
+ 
+            vector<int> rightIntv = {intervalsPair[idx].first, intervalsPair[idx].second};  // answer(imediate interval)
+            intervalsResIdx[i] = rightIntervalsMap[rightIntv];                             // answer index (corresponding to immediate interval)
+        }
+ 
+        return intervalsResIdx;
+    }
+};
