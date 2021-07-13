@@ -1,0 +1,39 @@
+// Solution 1
+// Time complexity -- O(n*26) [for every char in string s , I am checking the two maps are equal or not]
+// map can be of size 26(no. of alphabets) or 256 depending upon question
+ 
+//Edit -- But since 26 is very small number, comaparison of two hashmaps can be considered O(1).
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) 
+    {
+        unordered_map<int,int> phash;
+        unordered_map<int,int> shash;
+ 
+        int i = 0;
+        int j = 0;
+        vector<int> ans;
+ 
+        for(auto x : p)
+        {
+            phash[x]++;
+        }
+        for(j = 0 ; j < p.size() ; j++)
+        {
+            shash[s[j]]++;
+        }
+        for( ; j < s.size() ; j++)
+        {
+            if(shash == phash) ans.push_back(i);
+ 
+ 
+            shash[s[i]]--;
+            if(shash[s[i]] == 0) shash.erase(s[i]);
+            shash[s[j]]++;
+            i++;
+        }
+        if(shash == phash) ans.push_back(i);
+        return ans;
+    }
+};
+Close
