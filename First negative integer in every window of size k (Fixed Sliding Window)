@@ -1,0 +1,25 @@
+//First negative integer in every window of size k (Fixed Sliding Window)https://practice.geeksforgeeks.org/problems/first-negative-integer-in-every-window-of-size-k3345/1#
+vector<long long> printFirstNegativeInteger(long long int A[], long long int N, long long int K) {
+ 
+     int i = 0;
+     int j = 0;
+     vector<long long int> ans;
+ 
+     queue<long long int> no;
+ 
+     for(j = 0 ; j < N ; j++)
+     {
+        if(A[j] < 0) no.push(A[j]);
+ 
+        if(j-i+1 == K)
+        {
+            if(!no.empty()) ans.push_back(no.front());
+            else ans.push_back(0);
+ 
+            if(A[i] == no.front()) no.pop();  // contraction
+            i++;
+        }
+     }
+ 
+     return ans;
+ }
