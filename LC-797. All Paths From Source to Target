@@ -1,0 +1,35 @@
+class Solution {
+public:
+ 
+    vector<vector<int>> temp;
+    void dfs(vector<vector<int>> &graph , vector<vector<int>> &paths , int at , int to , int par)
+    {
+        if(at == to)
+        {
+            vector<int> p;
+            p.push_back(0);
+            for(auto x : temp)
+            {
+                p.push_back(x[1]);   
+            }
+            paths.push_back(p);
+            return;
+        }
+ 
+        for(auto child : graph[at])
+        {
+            if(child == par) continue;
+            temp.push_back({at,child});
+            dfs(graph,paths,child,to,at);
+            temp.pop_back();
+        }
+    }
+ 
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) 
+    {
+        int n = graph.size();
+        vector<vector<int>> paths;
+        dfs(graph,paths,0,n-1,-1);
+        return paths;
+    }
+};
