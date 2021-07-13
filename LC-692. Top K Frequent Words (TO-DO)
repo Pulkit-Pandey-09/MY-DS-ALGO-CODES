@@ -1,0 +1,33 @@
+ypedef pair<int, string> pi;
+ 
+struct mySort {
+     bool operator() (pi p1, pi p2) {
+    if(p1.first == p2.first)
+        return (p1.second < p2.second);
+    return (p1.first > p2.first);
+    }
+};
+ 
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        unordered_map<string, int> wordFreqCnt; // Word-Frequenct Count;
+        for(auto word : words) wordFreqCnt[word]++;
+ 
+        priority_queue<pi, vector<pi>, mySort> minPQ; // Min PQ with custom sort
+        for(auto wfc : wordFreqCnt) {
+            minPQ.push({wfc.second, wfc.first});
+            if(minPQ.size()>k)
+                minPQ.pop();
+        }
+ 
+        vector<string> kFreqWords;
+        while(!minPQ.empty()) {
+            pi ele = minPQ.top(); minPQ.pop();
+            kFreqWords.push_back(ele.second);
+        }
+        reverse(kFreqWords.begin(), kFreqWords.end());
+ 
+        return kFreqWords;
+    }
+};
