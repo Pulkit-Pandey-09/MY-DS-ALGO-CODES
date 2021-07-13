@@ -1,0 +1,28 @@
+class myComparator {
+public:
+    
+    bool operator()(int a, int b)
+    {
+        return a > b;
+    }
+};
+
+class Solution {
+public:
+    
+    int countGoodRectangles(vector<vector<int>>& rectangles) 
+    {
+        vector<int> maxLen;
+        for(auto sides : rectangles) maxLen.push_back(min(sides[0],sides[1]));
+        myComparator cmp;
+        sort(maxLen.begin(),maxLen.end(),cmp);
+        int stake = maxLen[0];
+        int ans = 0;
+        for(auto x : maxLen)
+        {
+            if(x != stake) break;
+            ans++;
+        }
+        return ans;
+    }
+};
