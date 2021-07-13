@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+int windowProblem(string s , string p)
+{
+    cout << "Entered" << endl;
+    int SL = s.length();
+    int PL = p.length();
+ 
+    if(SL < PL) return 0;
+ 
+    vector<int> SF(256,0);                // string(s) frequency
+    vector<int> PF(256,0);               // pattern(p) frequency
+ 
+    for(auto ptr : p)
+    {
+        PF[ptr]++;
+    }
+ 
+    int i = 0;                         // start of window
+    int min_window = INT_MAX;
+    int cnt = 0;                      // to check appropriate window
+ 
+    for(int j = 0 ; j < SL ; j++)
+    {
+        char ch = s[j];
+        SF[ch]++;
+ 
+        if(PF[ch] != 0 && SF[ch] <= PF[ch])
+        {
+            cnt++;
+        }
+ 
+        if(cnt == PL)               // beautifull window  (contraction)
+        {
+            // remove all unwanted characters
+            char temp = s[i];
+            while(PF[temp] == 0 || SF[temp] > PF[temp])
+            {
+                SF[temp]--;
+                i++;
+                temp = s[i];
+            }
+ 
+            int window_len = j - i + 1;
+            min_window = min(min_window,window_len);
+        }
+    }
+    return min_window;
+}
+ 
+int main()
+{
+#ifndef ONLINE_JUDGE
+    // for getting input from input.txt
+    freopen("input.txt", "r", stdin);
+    // for writing output to output.txt
+    freopen("output.txt", "w", stdout);
+#endif
+ 
+	//Hi! Welcome Mr Pulkit Pandey.
+	string s1 , s2;
+    getline(cin,s1);
+    getline(cin,s2);
+ 
+    int ans = 0;
+    ans = windowProblem(s1,s2);
+    cout << ans << endl;
+ 
+ 
+}
