@@ -1,0 +1,91 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+class Graph{
+ 
+    int V;
+    vector<int>* adjList;
+ 
+    public:
+ 
+    //Constructor
+    Graph(int V)
+    {
+        this->V = V;
+       adjList = new vector<int>[V+1];
+    }
+ 
+    ~Graph()
+    {
+    	cout << endl;
+    	cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+    	cout << "Programme Terminated" << endl;
+    }
+ 
+    // add edge function
+    void addEdge(int x , int y)
+    {
+        adjList[x].push_back(y);
+        adjList[y].push_back(x);
+    }
+ 
+    bool dfs_BipartitieCheck(int src , int par , int rang , vector<int> &color)
+    {
+        color[src] = rang;            // rang == 1 or 2;
+ 
+        for(auto to : adjList[src])
+        {
+            bool isBipartite = false;
+            if(color[to] == -1)
+            {
+                isBipartite = dfs_BipartitieCheck(to,src,3-rang,color);
+                if(!isBipartite)
+                {
+                    return false;
+                }
+            }
+            else if(to != par && color[to] == color[src])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+ 
+    bool bipartite()
+    {
+        vector<int> color(V+1,-1);
+        bool ans = false;
+        for(int i = 1 ; i <= V ; i++)
+        {
+            if(color[i] == -1)
+            {
+                ans = dfs_BipartitieCheck(i,-1,1,color);
+            }
+        }
+        return ans;
+    }
+ 
+ 
+};
+ 
+int main()
+{
+    Graph g(4);
+    g.addEdge(1,3);
+    g.addEdge(3,2);
+    g.addEdge(2,4);
+    g.addEdge(4,1);
+    g.addEdge(1,2);
+ 
+    if(g.bipartite() == true)
+    {
+        cout << "Graph is a Bipartite Graph" << endl;
+    }
+    else
+    {
+        cout << "Graph is not a Bipartite Graph" << endl;
+    }
+ 
+    return 0;
+}
