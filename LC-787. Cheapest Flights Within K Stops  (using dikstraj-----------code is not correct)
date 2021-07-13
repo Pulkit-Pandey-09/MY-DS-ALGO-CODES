@@ -1,0 +1,68 @@
+class Solution {
+public:
+ 
+    int dikstraj(vector<vector<int>> &adjList , int n , int src , int dest , int k)
+    {
+        vector<int> dist(n,INT_MAX);
+        vector<int> currStops(n,INT_MAX);
+ 
+        set<vector<int>> s;   // dist,node,cost
+        s.insert({0,src,0});
+        dist[src] = 0;
+        currStops[src] = 0;
+ 
+        while(!s.empty())
+        {
+            vector<int> info = *(s.begin());
+            s.erase(s.begin());
+ 
+            int at = info[1];
+            int cost = info[0];
+            int stops = info[2];
+ 
+            for (auto childInfo = adjList[at].begin(); childInfo != adjList[at].end(); ++childInfo)
+            {
+                int to = childInfo[0];
+                int length = childInfo[1];
+ 
+                if(cost + length < dist[to])
+                {
+                    if(s.find({dist[to],to,currStops[to]}) != s.end())
+                    {
+                        s.erase(s.find({dist[to],to,currStops[to]}));
+                    }
+                    dist[to] = cost + length;
+                    currStops[to] = stops+1;
+                    s.insert({dist[to],to,stops+1});
+                }
+                else if(currStops[to] < stops+1)
+                {
+                    if(s.find({dist[to],to,currStops[to]}) != s.end())
+                    {
+                        s.erase(s.find({dist[to],to,currStops[to]}));
+                    }
+                    dist[to] = cost + length;
+                    s.insert({dist[to],to,stops+1});
+                }
+            }
+        }
+        return dist[dest] == INT_MAX ? -1 : dist[dest];
+    }
+ 
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) 
+    {
+        vector<vector<int>> adjList;
+        for(auto x : flights)
+        {
+            int at = x[0];
+            int to = x[1];
+            int cost = x[2];
+ 
+            adjList[at].push_back({to,cost});
+        }
+ 
+        int ans = dikstraj(adjList,n,src,dest,k);
+ 
+        return ans;
+    }
+};
