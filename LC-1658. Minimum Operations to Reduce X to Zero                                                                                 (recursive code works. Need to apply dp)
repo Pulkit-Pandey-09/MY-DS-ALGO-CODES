@@ -1,0 +1,29 @@
+class Solution {
+public:
+ 
+    int solve(vector<int> &nums, int n, int i, int j, int x , int dp[n+1])
+    {
+        if(x == 0) return 0;
+        if(i >=  n || j < 0 || i > j) return INT_MAX;
+        if(dp[i][j][x] != -1) return dp[i][j][x];
+ 
+        int left = INT_MAX;
+        int right = INT_MAX;
+ 
+        if(x-nums[i] >= 0) left = solve(nums,n,i+1,j,x-nums[i],dp);
+        if(x-nums[j] >= 0) right = solve(nums,n,i,j-1,x-nums[j],dp);
+ 
+        left == -1 ? left = INT_MAX : left;
+        right == -1 ? right = INT_MAX : right;
+        return dp[i][j][x] = min(left,right) == INT_MAX ? -1 : 1+min(left,right);
+    }
+ 
+    int minOperations(vector<int>& nums, int x) 
+    {
+        int n = nums.size();
+        if(!n) return 0;
+        int dp[n+1][n+1][n+1] = {-1};
+        int ans = solve(nums,n,0,n-1,x,dp);
+        return ans;
+    }
+};
