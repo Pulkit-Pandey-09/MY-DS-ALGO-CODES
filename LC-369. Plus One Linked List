@@ -1,0 +1,84 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+ 
+ // method 1 (3 pass)
+class Solution1 {
+public:
+ 
+    ListNode* reverseLL(ListNode* head)
+    {
+        if(head == NULL || head->next == NULL) 
+        {
+            return head;
+        }
+ 
+        ListNode* temp = reverseLL(head->next);
+        head->next->next = head;
+        head->next = NULL;
+ 
+        return temp;
+    }
+ 
+    ListNode* plusOne(ListNode* head) 
+    {
+        head = reverseLL(head);
+ 
+        ListNode* temp1 = head;
+        ListNode* prev = temp1;
+        int carry = 1;
+        while(temp1 != NULL)
+        {
+            int sum = carry;
+            sum += temp1->val;
+ 
+            temp1->val = sum >= 10 ? sum%10 : sum;
+            carry = sum >= 10 ? 1 : 0;
+ 
+            prev = temp1;
+            temp1 = temp1->next;
+        }
+        if(carry)
+        {
+            prev->next = new ListNode(carry);
+        }
+ 
+        head = reverseLL(head);
+ 
+        return head;
+    }
+};
+ 
+// method 2 (2 pass)
+class Solution {
+public:
+ 
+    ListNode* plusOne(ListNode* head) 
+    {
+        ListNode* dummy = new ListNode(0,head);
+        ListNode* notNine = dummy;
+        while(head != NULL)
+        {
+            if(head->val != 9) notNine = head;
+            head = head->next;
+        }
+ 
+        notNine->val += 1;
+        notNine = notNine->next;
+ 
+        while(notNine != NULL)
+        {
+            notNine->val = 0;
+            notNine = notNine->next;
+        }
+ 
+        return dummy->val == 1 ? dummy : dummy->next;
+    }
+};
