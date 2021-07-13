@@ -1,0 +1,47 @@
+class Solution {
+public:
+    class mycompare{
+        public:
+        bool operator()(pair<int,char> a , pair<int,char> b)
+        {
+            return a.first > b.first;
+        }
+    };
+ 
+ 
+    string frequencySort(string s) 
+    {
+        vector<pair<int,char>> v;  // freq,char
+        unordered_map<char,int> up;   
+        for(auto x : s)                   // O(n)
+        {
+            up[x]++;
+        }
+        char ch;
+        int freq;
+        for(auto x : up)          // O(n)
+        {
+            ch = x.first;
+            freq = x.second;
+ 
+            v.push_back(make_pair(freq,ch));
+        }
+ 
+        sort(v.begin(),v.end(),mycompare());  // O(nlogn)
+        string ans = "";
+        for(auto x : v)           // O(n)            
+        {
+            ch = x.second;
+            freq = x.first;
+ 
+            while(freq--)            
+            {
+                ans += ch;
+            }
+        }
+        return ans;
+    }
+};
+ 
+// Time Complexity = O(nlogn)
+// Space Complexity = O(n)
