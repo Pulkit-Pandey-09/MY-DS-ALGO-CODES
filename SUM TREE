@@ -1,0 +1,29 @@
+//SUM TREE https://practice.geeksforgeeks.org/problems/sum-tree/1#
+class Solution
+{
+    public:
+ 
+    pair<bool,int> solve(Node* root)
+    {
+        if(!root) return make_pair(true,0);
+        if(root->left == NULL && root->right == NULL) return make_pair(true,root->data);
+ 
+        auto lt = solve(root->left);
+        auto rt = solve(root->right);
+ 
+        pair<bool,int> myans = make_pair(false,0);
+        if(root-> data == lt.second+rt.second && lt.first && rt.first) 
+        {
+            myans.first = true;
+            myans.second = root-> data+lt.second+rt.second;
+        }
+        return myans;
+    }
+ 
+    bool isSumTree(Node* root)
+    {
+         // Your code here
+         pair<bool,int> ans = solve(root);
+         return ans.first;
+    }
+};
