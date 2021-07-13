@@ -1,0 +1,24 @@
+//Max Sum Subarray of size K  (Fixed sliding window) https://practice.geeksforgeeks.org/problems/max-sum-subarray-of-size-k5313/1#
+int maximumSumSubarray(int K, vector<int> &Arr , int N)
+    {    
+        int i = 0;
+        int j = 0;
+        int maxSum = INT_MIN;
+        int currSum = 0;
+ 
+        for(j = 0 ; j < N ; j++)
+        {
+            currSum += Arr[j];
+ 
+            if(j-i+1 == K)
+            {
+                maxSum = max(maxSum , currSum);
+ 
+                // contraction
+                currSum -= Arr[i];
+                i++;
+            }
+        }
+        return maxSum;
+    }     
+ };
