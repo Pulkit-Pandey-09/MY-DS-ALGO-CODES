@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int lengthOfLongestSubstringKDistinct(string s, int k) 
+    {
+        unordered_map<int,int> record;
+        int i = 0;
+        int j = 0;
+        int ans = INT_MIN;
+        /*
+        "aa"
+         2
+        */
+        for(j = 0 ; j < s.size() ; j++)
+        {
+            //store the ideal candidates
+            record[s[j]]++;
+ 
+            // contraction
+            if(record.size() > k)
+            {
+                while(record.size() > k)
+                {
+                    record[s[i]]--;
+                    if(record[s[i]] == 0)
+                    {
+                        record.erase(s[i]);
+                    }
+                    i++;
+                }
+            }
+            // beautifull window of size k
+            if(record.size() <= k)
+            {
+                ans = max(ans,j-i+1);
+            }
+        }
+        return ans;
+    }
+};
