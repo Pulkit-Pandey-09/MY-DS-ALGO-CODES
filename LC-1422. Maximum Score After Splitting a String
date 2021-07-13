@@ -1,0 +1,80 @@
+lass Solution {
+public:
+    int maxScore(string s) 
+    {
+        // approach 1 - O(n^2)
+        /*int ans = INT_MIN;
+        int countOfZero = 0;
+        int countOfOne = 0;
+        if(s.length() == 2)
+        {
+            s[0] == '0' ? countOfZero++ : 0;
+            s[1] == '1' ? countOfOne++ : 0;
+            return countOfZero + countOfOne;
+        }
+        for(int i = 1 ; i < s.length()-1 ; i++)
+        {
+            countOfZero = 0;
+            countOfOne = 0;
+            int k = i;
+            while(k >= 0)
+            {
+                if(s[k] == '0') countOfZero++;
+                k--;
+            }
+            k = i;
+            while(k < s.length())
+            {
+                if(s[k] == '1') countOfOne++;
+                k++;
+            }
+            ans = max(ans , countOfZero + countOfOne);   
+        }
+        return ans;*/
+ 
+        // approach 2  --- O(n)
+ 
+        int n = s.length();
+        vector<int> dp0(n,0);
+        vector<int> dp1(n,0);
+ 
+        s[0] == '0' ? dp0[0] = 1 : dp0[0] = 0;
+        s[s.length()-1] == '1' ? dp1[s.length()-1] = 1 : dp1[s.length()-1] = 0;
+ 
+        for(int i = 1 ; i < s.length() ; i++)
+        {
+            dp0[i] = dp0[i-1] + (s[i] == '0' ? 1 : 0);
+        }
+ 
+        for(int i = s.length()-2 ; i >= 0 ; i--)
+        {
+            dp1[i] = dp1[i+1] + (s[i] == '1' ? 1 : 0);
+        }
+        int ans = INT_MIN;
+        for(int i = 1 ; i < s.length() ; i++)
+        {
+            ans = max(ans , dp0[i-1]+dp1[i]);
+        }
+        return ans;
+ 
+        /*
+        sde skills code(nice way)
+       class Solution {
+public:
+    int maxScore(string s) {
+        int zeroCnt = 0;
+        int oneCnt = count(s.begin(), s.end(), '1');
+        int n = s.size(), maxScore = 0;;
+        
+        for(int i=0; i<n-1; ++i) {
+            if(s[i] == '0')
+                zeroCnt++;
+            else
+                oneCnt--;
+            maxScore = max(maxScore, zeroCnt+oneCnt);
+        }
+        return maxScore;
+    }
+};*/
+    }
+};
