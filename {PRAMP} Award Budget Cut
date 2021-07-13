@@ -1,0 +1,53 @@
+//Award Budget Cuts (https://www.pramp.com/challenge/r1Kw0vwG6OhK9AEGAyWV)
+#include<bits/stdc++.h>
+using namespace std;
+ 
+double okay(vector<int> grantsArray, int newBudget, double cap)
+{
+  int persons = 0;
+  int sum = 0;
+  for(int i = 0; i < grantsArray.size(); i++)
+  {
+    if(grantsArray[i] >= cap) 
+    {
+      sum += cap;
+      persons++;
+    }
+    else
+    {
+      sum += grantsArray[i];
+    }
+    if(persons > grantsArray.size() || sum > newBudget) return false;
+  }
+  return true;
+}
+ 
+double findGrantsCap( vector<int> grantsArray, int newBudget ) 
+{
+  double lo = 0;
+  double hi = newBudget+1;
+  while(lo+1<hi)
+  {
+    double cap = (hi+lo)/2; // cap == mid
+    //cout << cap << " ";
+    if(okay(grantsArray,newBudget,cap))
+    {
+      lo = cap;
+    }
+    else
+    {
+      hi = cap;
+    }
+  }
+  return lo;
+}
+ 
+int main() 
+{
+  vector<int> grantsArray = {2, 100, 50, 120, 1000};
+  int newBudget = 190;
+  cout << int(findGrantsCap(grantsArray, newBudget));
+  return 0;
+}
+ 
+ 
