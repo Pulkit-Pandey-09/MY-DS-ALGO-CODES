@@ -1,2 +1,2 @@
 # MY CODES
-This repository contains all my ds/algo codes.
+This repository contains all my data structures and algorithms problems codes.
