@@ -1,0 +1,41 @@
+class Solution {
+public:
+ 
+    int partition(vector<int>& nums, int start, int end)
+    {
+        int pivot = end;
+        int i = start-1;
+        int j = start;
+ 
+        for(; j < end; j++)
+        {
+            if(nums[j] <= nums[pivot])
+            {
+                i = i+1;
+                swap(nums[i],nums[j]);
+            }
+        }
+        swap(nums[i+1],nums[pivot]);
+        return i+1;
+    }
+ 
+    void quickSort(vector<int>& nums, int start, int end)
+    {
+        if(start >= end) return;
+ 
+        int p = partition(nums,start,end);
+ 
+        quickSort(nums,start,p-1);
+        quickSort(nums,p+1,end);
+        return;
+    }
+ 
+    vector<int> sortArray(vector<int>& nums) 
+    {
+        int n = nums.size();
+        if(!n) return {};
+ 
+        quickSort(nums,0,n-1);
+        return nums;
+    }
+};
