@@ -1,0 +1,70 @@
+// NOT MY CODE
+// https://leetcode.com/problems/preimage-size-of-factorial-zeroes-function/
+ 
+class Solution {
+public:
+    long long get(long long val){
+        long long a=5;
+        long long sum=0;
+        while(val/a>0){
+            sum+=(val/a);
+            a*=5;
+        }
+        return sum;
+    }
+    long long upper(int k){
+        long long low=0,high=LONG_MAX;
+        while(low<high){
+            long long mid=low+(high-low)/2;
+            long long val=get(mid);
+            if(k>=val){low=mid+1;}
+            else{high=mid;}
+        }
+        //cout<<low<<" "<<high<<endl;
+        return high-1;
+    }
+    int preimageSizeFZF(int k) {
+        long long a=upper(k);
+        if(get(a)==k){return 5;}
+        else{return 0;}
+    }
+};
+ 
+// https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+ 
+class Solution {
+public:
+    static bool cmp(vector<int>a,vector<int>b){
+        return a[1]<b[1];
+    }
+    int findMinArrowShots(vector<vector<int>>& points) {
+        sort(points.begin(),points.end(),cmp);
+        int cur_max=points[0][1];
+        int ans=1;
+        for(auto i:points){
+            cout<<i[0]<<' '<<i[1]<<endl;
+            if(i[0]<=cur_max){continue;}
+            ans+=1;
+            cur_max=i[1];
+        }
+        return ans;
+    }
+};
+ 
+// https://leetcode.com/problems/first-bad-version/
+ 
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        int low=1,high=n;
+        while(low<high){
+            int mid=low+(high-low)/2;
+            if(isBadVersion(mid)){
+                high=mid;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        return low;
+    }
