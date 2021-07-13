@@ -49,3 +49,48 @@ public:
         return ans;
     }
 };
+
+
+// APPROACH 2
+// This is another approach, i thought. Last two test cases did not passed
+// Golu said, the logic is wrong. Still need to discuss about this approach.
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+ 
+    void solve(TreeNode* root, int level, int hd, map<int,pair<int,int>> &mp)
+    {
+        if(!root) return;
+ 
+        if(mp.find(level) == mp.end() || hd > mp[level].second)
+        {
+            mp[level].first = root->val;
+            mp[level].second = hd;
+        }
+ 
+        solve(root->right,level+1,hd+1,mp);
+        solve(root->left,level+1,hd-1,mp);
+    }
+ 
+    vector<int> rightSideView(TreeNode* root) 
+    {
+        map<int,pair<int,int>> mp; //level,(node->val,hd)
+        solve(root,0,0,mp);
+        vector<int> ans;
+        for(auto val : mp)
+        {
+            ans.push_back(val.second.first);
+        }
+        return ans;
+    }
+};
