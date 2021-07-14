@@ -26,3 +26,21 @@ public:
         return ans;
     }
 };
+
+//Approach 2
+class Solution {
+public:
+    int countGoodRectangles(vector<vector<int>>& rectangles) {
+        int count=0,cur_max=0;
+        for(auto i:rectangles){
+            int val=min(i[0],i[1]);
+            if(val==cur_max){count+=1;}
+            else if(val>cur_max){
+                cur_max=val;
+                count=1;
+            }
+        }
+        return count;
+    }
+};
+
