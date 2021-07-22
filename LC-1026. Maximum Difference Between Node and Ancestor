@@ -12,7 +12,7 @@
 class Solution {
 public:
     int result = INT_MIN;
-    pair<int,int> solve(TreeNode* root)     // preorder traversal
+    pair<int,int> solve(TreeNode* root)     // postorder traversal
     {
         if(!root) return {INT_MIN,INT_MAX};
         if(root->left == NULL && root->right == NULL) 
