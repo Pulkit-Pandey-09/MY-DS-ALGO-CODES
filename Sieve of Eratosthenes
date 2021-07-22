@@ -19,3 +19,7 @@ int main()
     for(int i = 0; i <= n; i++) if(is_prime[i]) cout << i << " ";
 
 }
+
+/*
+Using such implementation the algorithm consumes O(n) of the memory (obviously) and performs O(nloglogn) 
+*/
