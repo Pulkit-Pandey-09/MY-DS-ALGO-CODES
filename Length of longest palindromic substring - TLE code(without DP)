@@ -1,0 +1,26 @@
+class Solution {
+public:
+    
+    int lp(string s, int i, int j)
+    {
+        if(i > j) return 0;
+        if(i == j) return 1;
+        if(j-1 == i && s[i] == s[j]) return 2;
+        
+        if(s[i] == s[j])
+        {
+            int len = j-i-1;
+            int longestLP = lp(s,i+1,j-1);
+            return longestLP == len ? 2 + len : 0; 
+        }
+        
+        return max(lp(s,i+1,j),lp(s,i,j-1));
+    }
+    
+    string longestPalindrome(string s) 
+    {
+        int ans = lp(s,0,s.size()-1);
+        cout <<  ans;
+        return "";
+    }
+};
