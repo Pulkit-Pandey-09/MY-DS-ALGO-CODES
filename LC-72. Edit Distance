@@ -1,0 +1,28 @@
+class Solution {
+public:
+    
+    int get(string word1, string word2, int n, int m, int i, int j, vector<vector<int>>& dp)
+    {
+        if(dp[i][j] != -1) return dp[i][j];
+        if(i == n) return dp[i][j] = m-j;
+        if(j == m) return dp[i][j] = n-i;
+        
+        if(word1[i] == word2[j]) return dp[i][j] = get(word1,word2,n,m,i+1,j+1,dp);
+        int del = 0;
+        int ins = 0;
+        int rep = 0;
+        del = get(word1,word2,n,m,i+1,j,dp);
+        ins = get(word1,word2,n,m,i,j+1,dp);
+        rep = get(word1,word2,n,m,i+1,j+1,dp);
+        return dp[i][j] = 1 + min(del,min(ins,rep));
+    }
+    
+    int minDistance(string word1, string word2) 
+    {
+        int n = word1.size();
+        int m = word2.size();
+        vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+        int ans = get(word1,word2,n,m,0,0,dp);
+        return ans;
+    }
+};
