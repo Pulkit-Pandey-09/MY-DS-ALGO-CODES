@@ -1,0 +1,41 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    
+    void check(TreeNode* root, int par, int x, int y, int k, vector<int>& accountX, vector<int>& accountY)
+    {
+        if(!root) return;
+        if(root->val == x)
+        {
+            accountX[0] = k;
+            accountX[1] = par;
+            return;
+        }
+        if(root->val == y)
+        {
+            accountY[0] = k;
+            accountY[1] = par;
+            return;
+        }
+        check(root->left,root->val,x,y,k+1,accountX,accountY);
+        check(root->right,root->val,x,y,k+1,accountX,accountY);
+    }
+    
+    bool isCousins(TreeNode* root, int x, int y) 
+    {
+        vector<int> accountX(2,-1); //depth , parent
+        vector<int> accountY(2,-2);
+        check(root,-1,x,y,0,accountX,accountY);
+        return accountX[0] == accountY[0] && accountX[1] != accountY[1] ? true : false;
+    }
+};
