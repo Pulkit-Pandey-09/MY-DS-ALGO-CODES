@@ -1,0 +1,65 @@
+class Solution {
+public:
+    int minAddToMakeValid(string s) 
+    {
+        if(s.size() == 0) return 0;
+        int add = 0;
+        stack<int> store;
+        for(int i = 0; i < s.size(); i++)
+        {
+            if(s[i] == '(') store.push(i);
+            else if(s[i] == ')')
+            {
+                if(!store.empty()) store.pop();
+                else 
+                {
+                    //cout << i << " ";
+                    add++;
+                }
+            } 
+        }
+        if(!store.empty())
+        {
+            while(!store.empty())
+            {
+                add++;
+                store.pop();
+            }
+        }
+        return add;
+    }
+};
+
+// approach 2 (space efficient)
+// removed stack
+class Solution {
+public:
+    int minAddToMakeValid(string s) 
+    {
+        if(s.size() == 0) return 0;
+        int add = 0;
+        int store = 0;
+        for(int i = 0; i < s.size(); i++)
+        {
+            if(s[i] == '(') store++;
+            else if(s[i] == ')')
+            {
+                if(store) store--;
+                else 
+                {
+                    //cout << i << " ";
+                    add++;
+                }
+            } 
+        }
+        if(store)
+        {
+            while(store)
+            {
+                add++;
+                store--;
+            }
+        }
+        return add;
+    }
+};
