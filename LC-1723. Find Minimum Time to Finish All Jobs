@@ -1,0 +1,48 @@
+class Solution {
+public:
+    bool okay(vector<int>& jobs, vector<int>& workers, int idx, int target)
+    {
+        if(idx >= jobs.size()) 
+        {
+            return true;
+        }
+        int cur = jobs[idx]; 
+        set<int> s;
+        for(int i = 0; i < workers.size(); i++)
+        {
+            if(s.find(workers[i]) != s.end()) continue;  
+            if(workers[i] + cur <= target)
+            {
+                s.insert(workers[i]);
+                workers[i] += cur;
+                if(okay(jobs,workers,idx+1,target)) 
+                {
+                    return true;
+                }
+                workers[i] -= cur;
+            }
+        }
+        return false;
+    }
+    
+    int minimumTimeRequired(vector<int>& jobs, int k) 
+    {
+        int sum = accumulate(jobs.begin(),jobs.end(),0);
+        sort(jobs.begin(),jobs.end(),greater<int>());
+        int lo = jobs[0]-1; 
+        int hi = sum;          
+        while(lo+1 < hi){
+            int mid = lo + (hi-lo)/2;
+            vector<int> workers(k,0);
+            if(okay(jobs,workers,0,mid)) 
+            {
+                hi = mid;
+            }
+            else 
+            {
+                lo = mid;
+            }
+        }
+        return hi;
+    }
+};
