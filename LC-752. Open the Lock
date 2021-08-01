@@ -1,0 +1,50 @@
+class Solution {
+public:
+    vector<string> convert(string s)
+    {
+        vector<string> res;
+        for(int i = 0; i < 4; i++)
+        {
+            string t = s;
+            t[i] = (s[i]-'0'+1)%10 + '0';
+            res.push_back(t);
+            t[i] = (s[i]-'0'+9)%10 + '0';
+            res.push_back(t);
+        }
+        return res;
+    }
+    
+    int openLock(vector<string>& deadend, string target) 
+    {
+        if(target == "0000") return 0;
+        set<string> nv(deadend.begin(),deadend.end());
+        set<string> vis;
+        queue<string> q;
+        string s = "0000";
+        if(nv.find(s) != nv.end()) return -1;
+        vis.insert(s);
+        q.push(s);
+        int level=0;
+        while(!q.empty())
+        {
+            int n=q.size();
+            cout << level << endl;
+            while(n--)
+            {
+                string s=q.front();
+                q.pop();
+                vector<string>v=convert(s);
+                for(auto i : v)
+                {
+                    if(i == target) return level+1;
+                    if(nv.find(i) != nv.end()) continue;
+                    if(vis.find(i) != vis.end()) continue;
+                    q.push(i);
+                    vis.insert(i);
+                }
+            }
+            level+=1;
+        }
+        return -1;
+    }
+};
