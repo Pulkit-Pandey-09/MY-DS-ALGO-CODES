@@ -1,0 +1,28 @@
+class Solution {
+public:
+    
+    bool okay(vector<int>& nums, int k, int mid)
+    {
+        int res = 0;
+        for(auto balls : nums)
+        {
+            int ways = (balls-1)/mid;  // no. of ways to divide 'balls' in mid 'balls'
+            res += ways;
+            if(ways > k || res > k) return false;
+        }
+        return true;
+    }
+    
+    int minimumSize(vector<int>& nums, int k) 
+    {
+        int lo = 0;
+        int hi = 1e9;
+        while(lo+1 < hi)
+        {
+            int mid = lo + (hi-lo)/2;
+            if(okay(nums,k,mid)) hi = mid;
+            else lo = mid;
+        }
+        return hi;
+    }
+};
