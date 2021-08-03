@@ -1,0 +1,23 @@
+class Solution1 {
+public:
+    int ans = 0;
+    void bring(TreeNode* root)
+    {
+        if(!root) return;
+        if(root->val % 2 == 0)
+        {
+            if(root->left != NULL && root->left->left != NULL) ans += root->left->left->val;
+            if(root->left != NULL && root->left->right != NULL) ans += root->left->right->val;
+            if(root->right != NULL && root->right->left != NULL) ans += root->right->left->val;
+            if(root->right != NULL && root->right->right != NULL) ans += root->right->right->val;
+        }
+        bring(root->left);
+        bring(root->right);
+        
+    }
+    int sumEvenGrandparent(TreeNode* root) 
+    {
+        bring(root);
+        return ans;
+    }
+};
