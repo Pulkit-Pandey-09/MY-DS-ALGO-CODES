@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<vector<int>> offSet = {{1,0},{-1,0},{0,1},{0,-1}};
+    bool okay(vector<vector<char>>& grid, int r, int c, int i, int j)
+    {
+        return i >= 0 && i < r && j >= 0 && j < c && grid[i][j] == '1';
+    }
+    void dfs(vector<vector<char>>& grid, int r, int c, int i, int j)
+    {
+        if(i < 0 || i >= r || j < 0 || j >= c) return;
+        grid[i][j] = '0';
+        for(int k = 0; k < offSet.size(); k++)
+        {
+            int idx = i + offSet[k][0];
+            int idy = j + offSet[k][1];
+            if(okay(grid,r,c,idx,idy))
+            {
+                dfs(grid,r,c,idx,idy);
+            }
+        }
+    }
+    int numIslands(vector<vector<char>>& grid) 
+    {
+        int r = grid.size();
+        int c = grid[0].size();
+        if(!r) return 0;
+        int ans = 0;
+        for(int i = 0; i < r; i++)
+        {
+            for(int j = 0; j < c; j++)
+            {
+                if(grid[i][j] == '1')
+                {
+                    ans++;
+                    dfs(grid,r,c,i,j);
+                }
+            }
+        }
+        return ans;
+    }
+};
