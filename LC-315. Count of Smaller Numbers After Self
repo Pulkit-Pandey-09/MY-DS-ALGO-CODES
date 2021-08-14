@@ -1,0 +1,71 @@
+class Solution {
+public:
+    
+    void merge(vector<pair<int,int>>& v, int lo, int loEnd, int hi, int hiEnd, vector<int>& count)
+    {
+        vector<pair<int,int>> n(hiEnd-lo+1);
+        int k = 0;
+        int Counter = 0;
+        int start = lo;
+        int end = hiEnd;
+        while(lo <= loEnd && hi <= hiEnd)
+        {
+            if(v[lo].first > v[hi].first)
+            {
+                Counter++;
+                n[k] = make_pair(v[hi].first,v[hi].second);
+                k++;
+                hi++;
+            }
+            else
+            {
+                count[v[lo].second] += Counter;
+                n[k] = make_pair(v[lo].first,v[lo].second);
+                k++;
+                lo++;
+            }
+        }
+        
+        while(lo <= loEnd)
+        {
+            count[v[lo].second] += Counter;
+             n[k] = make_pair(v[lo].first,v[lo].second);
+            lo++;
+            k++;
+        }
+        
+        while(hi <= hiEnd)
+        {
+            n[k] = make_pair(v[hi].first,v[hi].second);
+            hi++;
+            k++;
+        }
+        
+        for(int i = 0; i < n.size() && start <= end; i++)
+        {
+            v[start] = n[i];
+            start++;
+        }
+    }
+    
+    void mergeSort(vector<pair<int,int>>& v, int i, int j, vector<int>& count)
+    {
+        if(i >= j) return;
+        int mid = (j+i)/2;
+        mergeSort(v,i,mid,count);
+        mergeSort(v,mid+1,j,count);
+        merge(v,i,mid,mid+1,j,count);
+    }
+    
+    vector<int> countSmaller(vector<int>& nums) 
+    {
+        vector<pair<int,int>> v;
+        for(int i = 0; i < nums.size(); i++)
+        {
+            v.push_back(make_pair(nums[i],i));
+        }
+        vector<int> count(nums.size(),0);
+        mergeSort(v,0,nums.size()-1,count);
+        return count;
+    }
+};
