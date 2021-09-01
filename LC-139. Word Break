@@ -1,0 +1,21 @@
+class Solution {
+public:
+    
+    bool check(string s, set<string> &store, int pos, vector<int> &dp)
+    {
+        if(dp[pos] != -1) return dp[pos];
+        if(pos >= s.size()) return dp[pos] = true;
+        for(int i = pos; i < s.size(); i++)
+        {
+            if(store.find(s.substr(pos,i-pos+1)) != store.end() && check(s,store,i+1,dp)) return dp[pos] = true;
+        }
+        return dp[pos] = false;
+    }
+    
+    bool wordBreak(string s, vector<string>& wordDict) 
+    {
+        vector<int> dp(s.size()+1,-1);
+        set<string> store(wordDict.begin(),wordDict.end());
+        return check(s,store,0,dp);
+    }
+};
