@@ -1,0 +1,42 @@
+class Solution {
+public:
+    
+    bool detectCycle_dfs( vector<vector<int>>& adjList, int node, vector<bool>& vis, vector<bool>& inPath)
+    {
+        vis[node] = true;
+        inPath[node] = true;
+        for(auto child : adjList[node])
+        {
+            if(!vis[child])
+            {
+                bool containsCycle = detectCycle_dfs(adjList, child, vis, inPath);
+                if(containsCycle) return true;
+            }
+            else if(inPath[child])
+            {
+                return true;
+            }
+        }
+        inPath[node] = false;
+        return  false;
+    }
+    
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) 
+    {
+        vector<vector<int>> adjList(numCourses);
+        vector<bool> vis(numCourses, false);
+        vector<bool> inPath(numCourses,false);
+        for(int i = 0; i < prerequisites.size(); i++)
+        {
+            adjList[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        for(int i = 0; i < numCourses; i++)
+        {
+            if(!vis[i])
+            {
+                if(detectCycle_dfs(adjList,i,vis,inPath)) return false;
+            }
+        }
+        return true;
+    }
+};
