@@ -1,0 +1,52 @@
+class Solution {
+public:
+    
+    bool topologicalSorting(vector<vector<int>>& adjList, vector<bool>& vis, vector<int>& order, vector<bool>& inPath, int node)
+    {
+        vis[node] = true;
+        inPath[node] = true;
+        for(auto child : adjList[node])
+        {
+            if(!vis[child])
+            {
+                bool rainCheck = topologicalSorting(adjList, vis, order, inPath, child);
+                if(rainCheck) return true;  // cycle exists
+            }
+            else if(inPath[child])
+            {
+                return true; // cycle exists;
+            }
+        }
+        inPath[node] = false;
+        //cout << node << " ";
+        order.push_back(node);
+        return false;
+    }
+    
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) 
+    {
+        vector<vector<int>> adjList(numCourses);
+        vector<bool> vis(numCourses, false);
+        vector<bool> inPath(numCourses,false);
+        vector<int> order;
+        for(int i = 0; i < prerequisites.size(); i++)
+        {
+            adjList[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        // for(int i = 0; i < numCourses; i++)
+        // {
+        //     cout << i << "-->" << " ";
+        //     for(auto v : adjList[i]) cout << v << ",";
+        //     cout << endl;
+        // }
+        for(int i = 0; i < numCourses; i++)
+        {
+            if(!vis[i])
+            {
+                if(topologicalSorting(adjList, vis, order, inPath, i)) return {};
+            }
+        }
+        reverse(order.begin(),order.end());
+        return order;
+    }
+};
