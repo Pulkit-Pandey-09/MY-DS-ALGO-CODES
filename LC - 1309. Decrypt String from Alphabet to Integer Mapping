@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string freqAlphabets(string s) 
+    {
+        int x = ('2' - '0');
+        cout << (char)('a' + x - 1);
+        string res;
+        int i = s.size() - 1;
+        while(i >= 0) 
+         {
+            int l = 0;
+            if(s[i] == '#') {
+                --i;
+                l += (s[i] - '0');
+                --i;
+                l += (s[i] - '0') * 10;
+            } else {
+                l = (s[i] - '0');
+            }
+            res.push_back('a' + l - 1);
+            --i;
+        }
+        reverse(res.begin(), res.end());
+        return res;
+        
+    }
+};
