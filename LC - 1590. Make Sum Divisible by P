@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minSubarray(vector<int>& nums, int p) 
+    {
+        long sum = 0;
+        sum = accumulate(nums.begin(), nums.end(), sum);
+
+        // The valid subarrays have the sum of the form
+        // sumToFind, sumToFind + p, sumToFind + 2p, ...
+        int sumToFind = sum % p;
+        if(sumToFind < 0) sumToFind += p;
+        if(sumToFind == 0) return 0; // the whole sum is already divisible by P
+
+        // Keep track of the latest (remainder % p)  of the prefix sums
+        unordered_map<int, int> lastRem; // <rem, lastIndex>
+        int prefixSum = 0;
+        lastRem[0] = -1;
+        int result = nums.size();
+        for(int i = 0; i < nums.size(); ++i) 
+        {
+            prefixSum = (prefixSum + nums[i])%p;
+            if(prefixSum < 0) prefixSum += p;                     
+
+            // when we have prefixSum%p, we need to
+            // find the latest occurrence of prefix sum mod p 
+            // equals to (prefixSum - sumToFind) % p.
+            int counterpart = (prefixSum - sumToFind + p)%p;
+            if(lastRem.count(counterpart)) 
+            {
+                result = min(result, i - lastRem[counterpart]);
+            }
+            lastRem[prefixSum] = i;
+        }
+        return (result == nums.size()) ? -1 : result;
+        
+    }
+};
