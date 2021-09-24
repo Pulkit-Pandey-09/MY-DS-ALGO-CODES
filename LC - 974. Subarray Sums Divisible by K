@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) 
+    {
+        unordered_map<int,int> up;
+        up[0] = 1;
+        int psum = 0, rem = 0, ans = 0;
+        for(int i = 0; i < nums.size(); i++)
+        {
+            psum = (psum + nums[i]);
+            rem = psum % k;
+            if(rem < 0) rem = rem + k;
+            if(up.count(rem)) ans += up[rem];
+            up[rem] += 1;
+        }
+        return ans;
+    }
+};
