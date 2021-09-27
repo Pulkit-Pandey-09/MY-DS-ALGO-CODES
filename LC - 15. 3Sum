@@ -1,0 +1,65 @@
+// Approach 1 (using set)
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) 
+    {
+        if(!nums.size() || nums.size() < 3) return {};
+        set<vector<int>> temp;
+        vector<vector<int>> ans;
+        sort(nums.begin(), nums.end());
+        for(int i = 0; i <= nums.size()-3; i++)
+        {
+            int target = -nums[i];
+            int lo = i+1;
+            int hi = nums.size() -1;
+            while(lo < hi)
+            {
+                if(nums[lo] + nums[hi] == target) 
+                {
+                    temp.insert({nums[i], nums[lo], nums[hi]});
+                    lo++;
+                    hi--;
+                }
+                else if(nums[lo] + nums[hi] < target) lo++;
+                else hi--;
+            }
+        }
+        for(auto v : temp) ans.push_back(v);
+        return ans;
+    }
+};
+
+// approach 2
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) 
+    {
+        if(!nums.size() || nums.size() < 3) return {};
+        vector<vector<int>> ans;
+        sort(nums.begin(), nums.end());
+        for(int i = 0; i <= nums.size()-3; i++)
+        {
+            int target = -nums[i];
+            int lo = i+1;
+            int hi = nums.size() -1;
+            while(lo < hi)
+            {
+                if(nums[lo] + nums[hi] == target) 
+                {
+                    vector<int> v(3,0);
+                    v[0] = nums[i];
+                    v[1] = nums[lo];
+                    v[2] = nums[hi];
+                    ans.push_back(v);
+                    while(lo < hi && nums[lo] == v[1] ) lo++;
+                    while(hi > lo && nums[hi] == v[2] ) hi--;
+                }
+                else if(nums[lo] + nums[hi] < target) lo++;
+                else hi--;
+                
+            }
+            while(i+1 < nums.size() && nums[i+1] == nums[i] ) i++;
+        }
+        return ans;
+    }
+};
