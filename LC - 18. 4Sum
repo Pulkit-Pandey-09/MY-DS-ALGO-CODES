@@ -40,3 +40,46 @@ public:
 
 // appraoch 2
 // not using set
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) 
+    {
+        if(!nums.size() || nums.size() < 4) return {};
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> ans;
+        for(int i = 0; i < nums.size()-1; i++)
+        {
+            for(int j = i+1; j < nums.size(); j++)
+            {
+                int reqSum = target - (nums[i] + nums[j]);
+                int l = j+1;
+                int r = nums.size() - 1;
+                while(l < r)
+                {
+                    if(nums[l] + nums[r] == reqSum)
+                    {
+                        vector<int> v(4,0);
+                        v[0] = nums[i];
+                        v[1] = nums[j];
+                        v[2] = nums[l];
+                        v[3] = nums[r];
+                        ans.push_back(v);
+                        while(l < r && nums[l] == v[2]) l++;
+                        while(r > l && nums[r] == v[3]) r--; 
+                    }
+                    else if(nums[l] + nums[r] < reqSum)
+                    {
+                        l++;
+                    }
+                    else
+                    {
+                        r--;
+                    }
+                }
+                while(j+1 < nums.size() && nums[j+1] == nums[j]) j++;
+            }
+             while(i+1 < nums.size() && nums[i+1] == nums[i]) i++;
+        }
+        return ans;
+    }
+};
