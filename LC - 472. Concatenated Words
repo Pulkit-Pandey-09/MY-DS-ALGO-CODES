@@ -1,4 +1,5 @@
 // This approach is based on word break problem. This right approach but it will give TLE even after applying DP.
+// More efficient way is to use Trie. I have not tried Trie approach.
 class Solution {
 public:
     
