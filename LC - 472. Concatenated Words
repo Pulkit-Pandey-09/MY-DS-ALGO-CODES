@@ -1,0 +1,32 @@
+// This approach is based on word break problem. This right approach but it will give TLE even after applying DP.
+class Solution {
+public:
+    
+    bool check(string word, set<string>& list, int pos, vector<int>& dp)
+    {
+        if(dp[pos] != -1) return dp[pos];
+        if(pos >= word.size()) return dp[pos] = true;
+        for(int i = pos; i < word.size(); i++)
+        {
+            if(word.substr(pos,i-pos+1) != word && list.find(word.substr(pos, i-pos+1)) != list.end() && check(word, list, i+1, dp)) return dp[pos] = true;
+        }
+        return dp[pos] = false;
+    }
+    
+    vector<string> findAllConcatenatedWordsInADict(vector<string>& words) 
+    {
+        if(!words.size()) return {};
+        set<string> list(words.begin(), words.end());
+        vector<string> ans;
+        for(int i = 0; i < words.size(); i++)
+        {
+            vector<int> dp(words[i].size()+1, -1);
+            if(words[i] == "") continue; 
+            if(check(words[i], list, 0, dp))
+            {
+                ans.push_back(words[i]);
+            }
+        }
+        return ans;
+    }
+};
