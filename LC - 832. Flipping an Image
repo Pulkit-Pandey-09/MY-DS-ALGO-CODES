@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> flipAndInvertImage(vector<vector<int>>& image) 
+    {
+        int r = image.size();
+        int c = image[0].size();
+        for(int i = 0; i < r; i++)
+        {
+            int start = 0;
+            int end   = c-1;
+            while(start < end)
+            {
+                if(image[i][start] == image[i][end])
+                {
+                    image[i][start] = 1 - image[i][start];
+                    image[i][end] = 1 - image[i][end];
+                }
+                start++;
+                end--;
+            }
+        }
+        if(c&1)for(int i = 0; i < r; i++) image[i][c/2] = 1 - image[i][c/2];
+        return image;
+    }
+};
