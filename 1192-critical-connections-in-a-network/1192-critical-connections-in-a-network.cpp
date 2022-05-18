@@ -1,0 +1,61 @@
+class Solution {
+public:
+ 
+    void dfs(vector<vector<int>>& adjList , vector<bool>& visited , int at , int par , vector<int>& disc , vector<int>& lowKey , vector<vector<int>>& bridge)
+    {
+        static int time = 0;
+        visited[at] = true;
+        disc[at] = lowKey[at] = time;
+        time++;
+ 
+        for(auto child : adjList[at])
+        {
+            if(child == par)
+            {
+                continue;
+            }
+            if(visited[child])        // backedge
+            {
+                lowKey[at] = min(lowKey[at] , lowKey[child]);
+            }
+            else 
+            {
+ 
+                dfs(adjList,visited,child,at,disc,lowKey,bridge);
+                // check whether this edge is bridge or not?
+                if(lowKey[child] > disc[at])  // this is condition for a edge to be bridge
+                {
+                    bridge.push_back({at,child});
+                }
+                lowKey[at] = min(lowKey[at] , lowKey[child]);
+            }
+        }
+    }
+ 
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) 
+    {
+        //bookKeeping
+        vector<vector<int>> adjList(n);  
+        vector<bool> visited(n,false);
+        vector<int> disc(n,0);
+        vector<int> lowKey(n,0);
+        vector<vector<int>> bridge;
+        // forming graph
+        for(int i = 0; i < connections.size() ; i++)
+        {
+            adjList[connections[i][0]].push_back(connections[i][1]);
+            adjList[connections[i][1]].push_back(connections[i][0]);
+        }
+ 
+        // dfs
+        for(int i = 0 ; i < n ; i++)
+        {
+            if(!visited[i])
+            {
+                dfs(adjList,visited,i,-1,disc,lowKey,bridge);
+            }
+        }
+ 
+        return bridge;
+    }
+};
