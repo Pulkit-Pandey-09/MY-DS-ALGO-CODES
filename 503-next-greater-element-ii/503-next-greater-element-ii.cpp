@@ -5,8 +5,8 @@ public:
         int n = nums.size();
         stack<int> s;
         vector<int> v(n, -1);
-        s.push(nums[n-1]);
-        for(int i = 2*n-2; i >= 0; i--)
+       // s.push(nums[n-1]);
+        for(int i = 2*n-1; i >= 0; i--)
         {
             while(!s.empty() && nums[i%n] >= s.top())
             {
